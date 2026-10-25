@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>pArt - Pixel Art Maker</title>
+    <style>
+        body {
+            background: #f9b4d9;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(16, 25px);
+            width: fit-content;
+            margin: 20px auto;
+            border: 1px solid #555;
+        }
+        .cell {
+            width: 25px;
+            height: 25px;
+            background: white;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>pArt 🎨</h1>
+    <p>Create your own pixel art!</p>
+
+    <input type="color" id="color" value="#000000">
+    <button onclick="erase()">Eraser</button>
+    <button onclick="clearGrid()">Clear</button>
+
+    <div id="grid"></div>
+
+    <script>
+        const grid = document.getElementById("grid");
+        let currentColor = "#000000";
+        let erasing = false;
+
+        for (let i = 0; i < 256; i++) {
+            const cell = document.createElement("div");
+            cell.className = "cell";
+
+            cell.addEventListener("mousedown", () => paint(cell));
+            cell.addEventListener("mouseover", event => {
+                if (event.buttons === 1) paint(cell);
+            });
+
+            grid.appendChild(cell);
+        }
+
+        document.getElementById("color").addEventListener("input", event => {
+            currentColor = event.target.value;
+            erasing = false;
+        });
+
+        function paint(cell) {
+            cell.style.backgroundColor = erasing ? "white" : currentColor;
+        }
+
+        function erase() {
+            erasing = !erasing;
+        }
+
+        function clearGrid() {
+            document.querySelectorAll(".cell").forEach(cell => {
+                cell.style.backgroundColor = "white";
+            });
+        }
+    </script>
+</body>
+</html>
